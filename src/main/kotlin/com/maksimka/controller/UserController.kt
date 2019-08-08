@@ -12,10 +12,10 @@ class UserController(private val userService: UserService) {
     @PutMapping("update/{uuid}")
     fun updateById(@PathVariable uuid: String, @RequestBody user: CompactUser) = userService.edit(uuid, user)
 
-    @PutMapping("add")
-    fun create(@RequestBody user: User) = userService.add(user)
+    @PutMapping("create")
+    fun create(@RequestBody user: User) = userService.save(user)
 
-    @PutMapping("get/{uuid}")
+    @GetMapping("get/{uuid}")
     fun get(@PathVariable uuid: String) = userService.get(uuid)
 
     @PutMapping("delete/{uuid}")

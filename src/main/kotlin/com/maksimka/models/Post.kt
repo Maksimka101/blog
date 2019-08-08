@@ -12,10 +12,6 @@ data class Post(
         @GeneratedValue(strategy = GenerationType.AUTO)
         val postId: Long = 0,
 
-        @JoinColumn(name = "author")
-        @ManyToOne
-        val author: User = User(),
-
         @Column(name = "imageUrl")
         @JsonProperty(value = "imageUrl")
         val imageUrl: String = "",
@@ -26,7 +22,7 @@ data class Post(
 
         @Column(name = "commentIds")
         @JsonProperty(value = "commentIds")
-        @OneToMany(mappedBy = "post")
+        @OneToMany(orphanRemoval = true)
         val commentIds: Set<Comment> = setOf()
 
 )

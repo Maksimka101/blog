@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("post")
 class PostController(val postService: PostService) {
 
-    @GetMapping("create")
-    fun create(@RequestBody post: Post) = postService.create(post)
+    @PutMapping("create")
+    fun create(@RequestBody post: Post, @RequestParam("uuid") uuid: String) = postService.create(uuid, post)
 
-    @GetMapping("update")
+    @PutMapping("update")
     fun update(@RequestBody post: Post) = postService.update(post)
 
     // Todo так же удалять все медиа
-    @GetMapping("delete/{id}")
+    @DeleteMapping("delete/{id}")
     fun delete(@PathVariable id: Long) = postService.delete(id)
 
-    @GetMapping("getSample")
+    @GetMapping("sample")
     fun getSample() = Post()
 
 }

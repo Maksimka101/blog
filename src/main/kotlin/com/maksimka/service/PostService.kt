@@ -5,9 +5,17 @@ import com.maksimka.repositories.PostRepository
 import org.springframework.stereotype.Service
 
 @Service
-class PostService(val postRepository: PostRepository) {
+class PostService(val postRepository: PostRepository, val userService: UserService) {
 
-    fun create(post: Post) = postRepository.save(post)
+    // gain user uuid and post
+    // save post to user ( load user and save post )
+    // save user and save post
+    fun create(uuid: String, post: Post) {
+        val user = userService.get(uuid)
+        val copyUser = user.copy(posts = user.posts.plusElement(post))
+        postRepository.save(post)
+        userService.save(copyUser)
+    }
 
     fun update(post: Post) = postRepository.save(post)
 

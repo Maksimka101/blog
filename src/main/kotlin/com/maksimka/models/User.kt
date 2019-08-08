@@ -16,7 +16,7 @@ data class User (
         val name: String = "",
 
         @JsonProperty(value = "posts")
-        @OneToMany(mappedBy = "author")
+        @OneToMany(orphanRemoval = true)
         val posts: Set<Post> = setOf(),
 
         @Column(name = "followers")
@@ -35,8 +35,6 @@ data class User (
         fun copyFromCompactUser(user: CompactUser) = copy(name = user.name, uuid = user.uuid)
 }
 
-
-@Entity
 class CompactUser (
 
         @JsonProperty(value = "uuid")
