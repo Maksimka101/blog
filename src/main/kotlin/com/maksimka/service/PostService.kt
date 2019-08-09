@@ -10,9 +10,8 @@ class PostService(val postRepository: PostRepository, val userService: UserServi
     // gain user uuid and post
     // save post to user ( load user and save post )
     // save user and save post
-    fun create(uuid: String, post: Post) {
-        val user = userService.get(uuid)
-        val copyUser = user.copy(posts = user.posts.plusElement(post))
+    fun create(uuid: String, post: Post) = userService.get(uuid).ifPresent {
+        val copyUser = it.copy(posts = it.posts.plusElement(post))
         postRepository.save(post)
         userService.save(copyUser)
     }

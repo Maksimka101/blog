@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(val userRepository: UserRepository) {
 
-    fun get(uuid: String) = userRepository.findById(uuid).orElse(User())
+    fun get(uuid: String) = userRepository.findById(uuid)
 
     fun save(user: User) = userRepository.save(user)
 
@@ -20,6 +20,5 @@ class UserService(val userRepository: UserRepository) {
     }
 
     fun remove(uuid: String) = userRepository.deleteById(uuid)
-
 
 }
