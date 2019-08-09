@@ -19,13 +19,13 @@ data class User (
         @OneToMany(orphanRemoval = true)
         val posts: Set<Post> = setOf(),
 
-        @Column(name = "followers")
-        @JsonProperty(value = "followers")
-        val followers: HashSet<Long> = hashSetOf(),
+        @Column(name = "subscribers")
+        @JsonProperty(value = "subscribers")
+        val subscribers: Set<String> = setOf(),
 
         @Column(name = "subscription")
         @JsonProperty(value = "subscription")
-        val subscription: HashSet<Long> = hashSetOf(),
+        val subscription: Set<String> = setOf(),
 
         @Column(name = "isAuthorized")
         @JsonProperty(value = "isAuthorized")

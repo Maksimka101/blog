@@ -12,17 +12,13 @@ data class Comment(
         @GeneratedValue(strategy = GenerationType.AUTO)
         val id: Long = 0,
 
-        @JoinColumn(name = "post")
-        @ManyToOne
-        val post: Post = Post(),
-
         @Column(name = "name")
         @JsonProperty(value = "name")
         val name: String = "",
 
-        @Column(name = "imageUrl")
-        @JsonProperty(value = "imageUrl")
-        val imageUrl: String = "",
+        @Column(name = "avatarUrl")
+        @JsonProperty(value = "avatarUrl")
+        val avatarUrl: String = "",
 
         @Column(name = "uuid")
         @JsonProperty(value = "uuid")

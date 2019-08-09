@@ -11,6 +11,10 @@ class UserService(val userRepository: UserRepository) {
 
     fun get(uuid: String) = userRepository.findById(uuid).orElse(User())
 
+    fun getAllLike(name: String) = userRepository.findAllByNameStartingWith(name)
+
+    fun getAll(uuid: List<String>) = userRepository.findAllById(uuid)
+
     fun save(user: User) = userRepository.save(user)
 
     fun edit(uuid: String, compactUser: CompactUser) {
@@ -21,5 +25,22 @@ class UserService(val userRepository: UserRepository) {
 
     fun remove(uuid: String) = userRepository.deleteById(uuid)
 
+    fun subscribe(uuid: String, subscriberUUID: String) = userRepository.findById(uuid).ifPresent { user ->
+        userRepository.findById(subscriberUUID).ifPresent { subscriber ->
+            val user1 = user.copy(subscribers = user.subscribers.plusElement(subscriber.uuid))
+            val subscriber1 = subscriber.copy(subscription = subscriber.subscription.plusElement(user1.uuid))
+            userRepository.save(user1)
+            userRepository.save(subscriber1)
+        }
+    }
+
+    fun unsubscribe(uuid: String, subscriberUUID: String) = userRepository.findById(uuid).ifPresent { user ->
+        userRepository.findById(subscriberUUID).ifPresent { subscriber ->
+            val user1 = user.copy(subscribers = user.subscribers.minusElement(subscriber.uuid))
+            val subscriber1 = subscriber.copy(subscription = subscriber.subscription.minusElement(user1.uuid))
+            userRepository.save(user1)
+            userRepository.save(subscriber1)
+        }
+    }
 
 }
