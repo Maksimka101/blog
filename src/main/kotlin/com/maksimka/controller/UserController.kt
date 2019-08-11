@@ -17,11 +17,11 @@ class UserController(private val userService: UserService) {
     fun create(@RequestBody user: User) = userService.save(user)
 
     @GetMapping("get/{uuid}")
-    fun get(@PathVariable uuid: String) = userService.get(uuid)
+    fun get(@PathVariable uuid: String) = userService.getOptional(uuid)
 
     // uuid divided by ";"
     @GetMapping("get")
-    fun getAll(@PathParam("uuid") uuid: String) = userService.getAll(uuid.split(";"))
+    fun getAll(@PathParam("uuid") uuid: String) = userService.getAllById(uuid.split(";"))
 
     @PutMapping("delete/{uuid}")
     fun delete(@PathVariable uuid: String) = userService.remove(uuid)

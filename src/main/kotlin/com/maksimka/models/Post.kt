@@ -10,7 +10,7 @@ data class Post(
         @Column(name = "postId")
         @JsonProperty(value = "postId")
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long = 0,
+        val id: Long = 1,
 
         @Column(name = "imageUrl")
         @JsonProperty(value = "imageUrl")
@@ -20,10 +20,14 @@ data class Post(
         @JsonProperty(value = "title")
         val title: String = "",
 
+        @Column(name = "content")
+        @JsonProperty(value = "content")
+        val content: String = "",
+
         @Column(name = "comments")
         @JsonProperty(value = "comments")
-        @OneToMany(orphanRemoval = true)
+        @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
         val comments: Set<Comment> = setOf()
 ) {
-        fun copyFromPost(post: Post) = copy(imageUrl = post.imageUrl, title = post.title)
+        fun copyFromPost(post: Post) = copy(imageUrl = post.imageUrl, title = post.title, content = post.content)
 }

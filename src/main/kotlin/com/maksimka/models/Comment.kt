@@ -10,7 +10,7 @@ data class Comment(
         @Column(name = "id")
         @JsonProperty(value = "id")
         @GeneratedValue(strategy = GenerationType.AUTO)
-        val id: Long = 0,
+        val id: Long = 1,
 
         @Column(name = "name")
         @JsonProperty(value = "name")

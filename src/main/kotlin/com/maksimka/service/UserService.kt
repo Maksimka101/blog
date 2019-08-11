@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(val userRepository: UserRepository) {
 
-    fun get(uuid: String) = userRepository.findById(uuid)
+    fun getOptional(uuid: String) = userRepository.findById(uuid)
+
+    fun getOrDefault(uuid: String) = getOptional(uuid).orElse(User())
 
     fun getAllLike(name: String) = userRepository.findAllByNameStartingWith(name)
 
-    fun getAll(uuid: List<String>) = userRepository.findAllById(uuid)
+    fun getAllById(uuid: List<String>) = userRepository.findAllById(uuid)
 
     fun save(user: User) = userRepository.save(user)
 

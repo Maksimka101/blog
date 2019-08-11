@@ -16,7 +16,7 @@ data class User (
         val name: String = "",
 
         @JsonProperty(value = "posts")
-        @OneToMany(orphanRemoval = true)
+        @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
         val posts: Set<Post> = setOf(),
 
         @Column(name = "subscribers")
@@ -32,7 +32,7 @@ data class User (
         val isAuthorized: Boolean = false
 
 ) {
-        fun copyFromCompactUser(user: CompactUser) = copy(name = user.name, uuid = user.uuid)
+        fun copyFromCompactUser(user: CompactUser) = copy(name = user.name, uuid = user.uuid, isAuthorized = user.isAuthorized)
 }
 
 class CompactUser (
@@ -41,7 +41,10 @@ class CompactUser (
         val uuid: String = "",
 
         @JsonProperty(value = "name")
-        val name: String = ""
+        val name: String = "",
+
+        @JsonProperty(value = "isAuthorized")
+        val isAuthorized: Boolean = false
 
 )
 

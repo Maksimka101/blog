@@ -1,6 +1,7 @@
 package com.maksimka.controller
 
 import com.maksimka.models.Comment
+import com.maksimka.service.CommentService
 import org.springframework.web.bind.annotation.*
 import javax.websocket.server.PathParam
 
