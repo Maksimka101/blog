@@ -21,11 +21,11 @@ data class User (
 
         @Column(name = "subscribers")
         @JsonProperty(value = "subscribers")
-        val subscribers: Set<String> = setOf(),
+        val subscribers: HashSet<String> = hashSetOf(),
 
         @Column(name = "subscription")
         @JsonProperty(value = "subscription")
-        val subscription: Set<String> = setOf(),
+        val subscription: HashSet<String> = hashSetOf(),
 
         @Column(name = "isAuthorized")
         @JsonProperty(value = "isAuthorized")

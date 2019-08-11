@@ -27,8 +27,8 @@ class UserService(val userRepository: UserRepository) {
 
     fun subscribe(uuid: String, subscriberUUID: String) = userRepository.findById(uuid).ifPresent { user ->
         userRepository.findById(subscriberUUID).ifPresent { subscriber ->
-            val user1 = user.copy(subscribers = user.subscribers.plusElement(subscriber.uuid))
-            val subscriber1 = subscriber.copy(subscription = subscriber.subscription.plusElement(user1.uuid))
+            val user1 = user.copy(subscribers = user.subscribers.plusElement(subscriberUUID).toHashSet())
+            val subscriber1 = subscriber.copy(subscription = subscriber.subscription.plusElement(uuid).toHashSet())
             userRepository.save(user1)
             userRepository.save(subscriber1)
         }
@@ -36,8 +36,8 @@ class UserService(val userRepository: UserRepository) {
 
     fun unsubscribe(uuid: String, subscriberUUID: String) = userRepository.findById(uuid).ifPresent { user ->
         userRepository.findById(subscriberUUID).ifPresent { subscriber ->
-            val user1 = user.copy(subscribers = user.subscribers.minusElement(subscriber.uuid))
-            val subscriber1 = subscriber.copy(subscription = subscriber.subscription.minusElement(user1.uuid))
+            val user1 = user.copy(subscribers = user.subscribers.minusElement(subscriber.uuid).toHashSet())
+            val subscriber1 = subscriber.copy(subscription = subscriber.subscription.minusElement(user1.uuid).toHashSet())
             userRepository.save(user1)
             userRepository.save(subscriber1)
         }

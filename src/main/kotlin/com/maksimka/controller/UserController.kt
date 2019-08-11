@@ -29,11 +29,11 @@ class UserController(private val userService: UserService) {
     @GetMapping("sample")
     fun sample() = User()
 
-    @PutMapping("subscribeOn/{uuid}{subscriberUUID}")
-    fun subscribe(@PathVariable uuid: String, @PathVariable subscriberUUID: String) = userService.subscribe(uuid, subscriberUUID)
+    @PutMapping("subscribe")
+    fun subscribe(@PathParam("userUUID") uuid: String, @PathParam("subscriberUUID") subscriberUUID: String) = userService.subscribe(uuid, subscriberUUID)
 
-    @PutMapping("unsubscribeOn/{uuid}{subscriberUUID}")
-    fun unsubscribe(@PathVariable uuid: String, @PathVariable subscriberUUID: String) = userService.unsubscribe(uuid, subscriberUUID)
+    @PutMapping("unsubscribe")
+    fun unsubscribe(@PathParam("userUUID") uuid: String, @PathParam("subscriberUUID") subscriberUUID: String) = userService.unsubscribe(uuid, subscriberUUID)
 
     @GetMapping("nameContains/{name}")
     fun getAllUsersLike(@PathVariable name: String) = userService.getAllLike(name)
