@@ -60,18 +60,19 @@ class BlogApplicationTests {
         postService.create(user.uuid, post)
         assertEquals(post, postService.getOrDefault(post.id))
 
-        val updatedPost = post.copy(title = "title")
-        postService.update(updatedPost)
-        assertEquals(updatedPost, postService.getOrDefault(updatedPost.id))
+        val postFromUser = Post(title = "funny title")
+        val foundedUpdatedPost = postService.update(user.uuid, post.copyFromPost(postFromUser))
+        val requiredPost = post.copyFromPost(postFromUser).copy(id = foundedUpdatedPost.id)
+        assertEquals(requiredPost, postService.getOrDefault(requiredPost.id))
 
-        user = user.copy(posts = user.posts.plus(updatedPost))
+        user = user.copy(posts = user.posts.plus(requiredPost))
         assertEquals(user, userService.getOrDefault(user.uuid))
 
         val user2 = User()
         val post2 = Post(id = 2)
         userService.save(user2)
         postService.create(user2.uuid, post2)
-        assertFalse(postService.getOptional(2).isPresent)
+        assertFalse(postService.getOptional(post2.id).isPresent)
     }
 
     @Autowired
@@ -84,8 +85,8 @@ class BlogApplicationTests {
         val user = userService.save(User(isAuthorized = true))
         postService.create(user.uuid, post)
         commentService.create(post.id, comment)
-        val post1 = post.copy(comments = post.comments.plus(comment).toHashSet())
-        assertEquals(post1, postService.getOrDefault(post.id))
+        val post1 = post.copy(comments = post.comments.plus(comment))
+        assertEquals(post1, postService.getOrDefault(post1.id))
     }
 
 }

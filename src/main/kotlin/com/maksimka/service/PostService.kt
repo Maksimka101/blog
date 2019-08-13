@@ -3,7 +3,6 @@ package com.maksimka.service
 import com.maksimka.models.Post
 import com.maksimka.repositories.PostRepository
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class PostService(val postRepository: PostRepository, val userService: UserService) {
@@ -20,17 +19,28 @@ class PostService(val postRepository: PostRepository, val userService: UserServi
     }
 
 
-    fun getOrDefault(id: Long) = getOptional(id).orElse(Post())
+    fun getOrDefault(id: Long): Post = getOptional(id).orElse(Post())
 
     fun getOptional(id: Long) = postRepository.findById(id)
 
-    // gain post
-    // copy all post data without id and comments
-    // but id must be present
-    fun update(post: Post) = postRepository.findById(post.id).ifPresent {
-        val save = it.copyFromPost(post)
-        println("from repo: " + postRepository.save(save))
-        println("save: $save")
+    // gain post, return new post and delete old post
+    fun update(uuid: String, post: Post): Post {
+        var finalPost = Post()
+        postRepository.findById(post.id).ifPresent { oldPost ->
+            userService.getOptional(uuid).ifPresent { user ->
+                if (user.isAuthorized) {
+                    finalPost = postRepository.save(oldPost.copyFromPost(post))
+                    postRepository.delete(oldPost)
+                    val userPosts = user.posts
+                            .filterNot { it.content == oldPost.content && it.title == oldPost.title }
+                            .toSet()
+                            .plus(finalPost)
+                    val copyUser = user.copy(posts = userPosts)
+                    userService.save(copyUser)
+                }
+            }
+        }
+        return finalPost
     }
 
     fun delete(id: Long) = postRepository.deleteById(id)

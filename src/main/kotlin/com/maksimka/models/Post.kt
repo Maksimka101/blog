@@ -29,5 +29,5 @@ data class Post(
         @OneToMany(orphanRemoval = true, fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
         val comments: Set<Comment> = setOf()
 ) {
-        fun copyFromPost(post: Post) = copy(imageUrl = post.imageUrl, title = post.title, content = post.content)
+        fun copyFromPost(post: Post) = copy(imageUrl = post.imageUrl, title = post.title, content = post.content, id = post.id, comments = post.comments)
 }

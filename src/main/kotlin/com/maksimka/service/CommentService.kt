@@ -9,8 +9,8 @@ class CommentService(val commentRepository: CommentRepository, val postService: 
 
     fun create(postId: Long, comment: Comment) = postService.getOptional(postId).ifPresent {
         commentRepository.save(comment)
-        val copyPost = it.copy(comments = it.comments.plusElement(comment))
-        postService.update(copyPost)
+        val copyPost = it.copy(comments = it.comments.plus(comment))
+        postService.update(comment.uuid, copyPost)
     }
 
     fun delete(id: Long) = commentRepository.deleteById(id)
